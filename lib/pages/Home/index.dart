@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:hm_shop/api/index.dart';
 import 'package:hm_shop/components/Home/HmCategory.dart';
 import 'package:hm_shop/components/Home/HmHot.dart';
 import 'package:hm_shop/components/Home/HmMoreList.dart';
 import 'package:hm_shop/components/Home/HmSlider.dart';
 import 'package:hm_shop/components/Home/HmSuggestion.dart';
+import 'package:hm_shop/constants/index.dart';
 import 'package:hm_shop/viewmodels/BannerItem.dart';
 
 class HomeView extends StatefulWidget {
@@ -15,20 +17,12 @@ class HomeView extends StatefulWidget {
 
 class _HomeViewState extends State<HomeView> {
 
- final List<BannerItem> banners = [
-    BannerItem(
-      id: '1',
-      imgUrl: 'https://picsum.photos/id/1/200/300',
-    ),
-    BannerItem(
-      id: '2',
-      imgUrl: 'https://picsum.photos/id/2/200/300',
-    ),
-    BannerItem(
-      id: '3',
-      imgUrl: 'https://picsum.photos/id/3/200/300',
-    ),
-];
+//分类列表
+  List<CategoryItem> categoryList = [];
+
+// 轮播图数据
+  List<BannerItem> banners = [];
+
 
   List<Widget> _getScrollChildren() {
     return [
@@ -41,7 +35,7 @@ class _HomeViewState extends State<HomeView> {
         ),
       ),
       SliverToBoxAdapter(
-        child:HmCategory(),
+        child:HmCategory(categoryList: categoryList),
       ),
       SliverToBoxAdapter(
         child: SizedBox(
@@ -83,6 +77,27 @@ class _HomeViewState extends State<HomeView> {
       HmMoreList(),
     ];
   }
+
+  @override
+  void initState() {
+    super.initState();
+    getBannerList();
+    getCategoryList();
+  }
+
+//获取轮播图数据
+  Future<void> getBannerList() async {
+    banners = await getBannerListAPI();
+    setState(() {});
+  }
+
+//获取分类数据
+  Future<void> getCategoryList() async {
+    categoryList = await getCategoryListAPI();
+    setState(() {});
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return CustomScrollView(
