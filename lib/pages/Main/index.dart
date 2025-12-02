@@ -37,10 +37,10 @@ int currentIndex=0;
 
   List<Widget> getchildren(){
     return [
-      const HomeView(),
-      const CategoryView(),
-      const CartView(),
-      const MineView(),
+       HomeView(),
+       CategoryView(),
+       CartView(),
+       MineView(),
     ];
   }
 
