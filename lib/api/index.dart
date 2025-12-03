@@ -1,7 +1,7 @@
 //封装一个api，目的是返回业务侧腰的数据结构
 import 'package:hm_shop/constants/index.dart';
 import 'package:hm_shop/utils/DioRequest.dart';
-import 'package:hm_shop/viewmodels/BannerItem.dart';
+import 'package:hm_shop/viewmodels/home.dart';
 
 Future<List<BannerItem>> getBannerListAPI() async {
 final tt = ((await dioRequest.get(HttpConstants.BANNER_LIST)) as List).map((item){
@@ -18,4 +18,27 @@ Future<List<CategoryItem>> getCategoryListAPI() async {
   }).toList();
 
   return tt;
+}
+
+//特惠推荐
+Future<SpecialRecommendResult> getProductListAPI() async {
+  final tt = SpecialRecommendResult.fromJson(await dioRequest.get(HttpConstants.PRODUCT_LIST));
+  return tt;
+}
+
+
+// 热榜推荐
+Future<SpecialRecommendResult> getInVogueListAPI() async {
+  // 返回请求
+  return SpecialRecommendResult.fromJson(
+    await dioRequest.get(HttpConstants.IN_VOGUE_LIST),
+  );
+}
+
+// 一站式推荐
+Future<SpecialRecommendResult> getOneStopListAPI() async {
+  // 返回请求
+  return SpecialRecommendResult.fromJson(
+    await dioRequest.get(HttpConstants.ONE_STOP_LIST),
+  );
 }
