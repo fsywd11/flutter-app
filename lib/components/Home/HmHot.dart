@@ -39,7 +39,7 @@ class _HmHotState extends State<HmHot> {
                 height: 100,
                 errorBuilder: (context, error, stackTrace) {
                   return Image.asset(
-                    "lib/assets/home_cmd_inner.png",
+                    "lib/assets/bg2.png",
                     width: 80,
                     height: 100,
                   );

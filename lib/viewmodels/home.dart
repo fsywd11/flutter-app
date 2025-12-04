@@ -52,7 +52,7 @@ class GoodsItem {
   String desc;
   String price;
   String picture;
-  String orderNum;
+  int orderNum;
 
   GoodsItem({
     required this.id,
@@ -75,7 +75,7 @@ class GoodsItem {
       desc: json['desc']?.toString() ?? '',
       price: json['price']?.toString() ?? '',
       picture: pictureUrl,
-      orderNum: json['orderNum']?.toString() ?? '',
+      orderNum: int.tryParse(json['orderNum']?.toString() ?? "0") ?? 0,
     );
   }
 }
@@ -152,3 +152,57 @@ class SpecialRecommendResult {
     }
 }
 
+
+
+class GoodDetailItem extends GoodsItem {
+  int payCount = 0;
+
+  /// 商品详情项
+  GoodDetailItem({
+    required super.id,
+    required super.name,
+    required super.price,
+    required super.picture,
+    required super.orderNum,
+    required this.payCount,
+  }) : super(desc: "");
+  // 转化方法
+  factory GoodDetailItem.formJSON(Map<String, dynamic> json) {
+    return GoodDetailItem(
+      id: json["id"]?.toString() ?? "",
+      name: json["name"]?.toString() ?? "",
+      price: json["price"]?.toString() ?? "",
+      picture: json["picture"]?.toString() ?? "",
+      orderNum: int.tryParse(json["orderNum"]?.toString() ?? "0") ?? 0,
+      payCount: int.tryParse(json["payCount"]?.toString() ?? "0") ?? 0,
+    );
+  }
+}
+
+
+
+class GoodsDetailsItems {
+    int counts;
+    int pageSize;
+    int pages;
+    int page;
+    List<GoodDetailItem> items;
+    GoodsDetailsItems({
+        required this.counts,
+        required this.pageSize,
+        required this.pages,
+        required this.page,
+        required this.items,
+    });
+    factory GoodsDetailsItems.fromJSON(Map<String, dynamic> json) {
+        return GoodsDetailsItems(
+            counts: int.tryParse(json["counts"]?.toString() ?? "0") ?? 0,
+            pageSize: int.tryParse(json["pageSize"]?.toString() ?? "0") ?? 0,
+            pages: int.tryParse(json["pages"]?.toString() ?? "0") ?? 0,
+            page: int.tryParse(json["page"]?.toString() ?? "0") ?? 0,
+            items: (json["items"] as List ?? [])
+                .map((item) => GoodDetailItem.formJSON(item as Map<String, dynamic>))
+                .toList(),
+        );
+    }
+}
