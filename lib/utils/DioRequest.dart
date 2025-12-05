@@ -51,11 +51,10 @@ class DioRequest {
    if(data['code']==GlobalConstants.SUCCESS_CODE){
     //认定http状态和业务状态均正常就可以正常的放行通过
      return data['result'];
-   }else{
+   }
      throw DioException(
       requestOptions: res.requestOptions,
-      response: data["msg"]??"加载数据异常");
-   }
+      message: data['msg']??"加载数据异常");
   }catch(e){
    rethrow;
   } 
