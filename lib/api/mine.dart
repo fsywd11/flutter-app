@@ -8,3 +8,9 @@ Future<GoodsDetailsItems> getGuessListAPI(Map<String,dynamic> params) async {
 return GoodsDetailsItems.fromJSON(await dioRequest.get(HttpConstants.GUESS_LIST,params: params));
   
 } 
+
+//登录有参数
+//mobile:13800000000,password:123456
+Future<UserInfo> loginAPI(Map<String,dynamic> data) async {
+  return UserInfo.fromJSON(await dioRequest.post(HttpConstants.LOGIN,data: data));
+}

@@ -1,4 +1,6 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:hm_shop/api/mine.dart';
 import 'package:hm_shop/utils/ToastUtils.dart';
 
 class LoginPage extends StatefulWidget {
@@ -68,7 +70,29 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  // 登录按钮Widget
+  // 登录方法
+  void _login() async {
+      try {
+        // 调用登录API
+        final res = await loginAPI(
+          {
+            'account': _phoneController.text,
+            'password': _codeController.text,
+          }
+        );
+        // 登录成功，处理逻辑（例如保存token、跳转页面等）
+        ToastUtils.showToast(context, '登录成功');
+        Navigator.pop(context);
+        // 跳转首页
+        Navigator.pushReplacementNamed(context, '/home');
+      } catch (e) {
+        // 登录失败，处理逻辑（例如显示错误信息）
+        ToastUtils.showToast(context,(e as DioException).message??"登录失败");
+      }
+    }
+
+
+     // 登录按钮Widget
   Widget _buildLoginButton() {
     return SizedBox(
       width: double.infinity,
@@ -83,7 +107,7 @@ class _LoginPageState extends State<LoginPage> {
               return;
             }
             // 验证通过，执行登录操作
-            ToastUtils.showToast(context,'登录成功');
+            _login();
           }
         },
         style: ElevatedButton.styleFrom(
@@ -183,4 +207,4 @@ class _LoginPageState extends State<LoginPage> {
       ),
     );
   }
-}
+  }

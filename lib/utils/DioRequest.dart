@@ -22,17 +22,25 @@ class DioRequest {
         if(response.statusCode! >= 200&&response.statusCode! < 300){
           return handler.next(response);
         }else{
-          return handler.reject(DioException(requestOptions: response.requestOptions,response: response));
+          return handler.reject(DioException(requestOptions: response.requestOptions));
         }
       },
       onError: (error,handler){ 
-        return handler.reject(error);
+        handler.reject(DioException(
+          requestOptions: error.requestOptions,
+          response: error.response?.data['msg']??"加载数据异常"));
       }
     ));
   }
   
   Future<dynamic> get(String url,{Map<String,dynamic>? params}){
     return _handleResponse(dio.get(url,queryParameters: params));
+  }
+
+
+  //post请求
+  Future<dynamic> post(String url,{Map<String,dynamic>? data}){
+    return _handleResponse(dio.post(url,data: data));
   }
 
 //进一步处理返回结果的函数
@@ -44,10 +52,12 @@ class DioRequest {
     //认定http状态和业务状态均正常就可以正常的放行通过
      return data['result'];
    }else{
-     throw Exception(data["msg"]??"加载数据异常");
+     throw DioException(
+      requestOptions: res.requestOptions,
+      response: data["msg"]??"加载数据异常");
    }
   }catch(e){
-    throw Exception(e);
+   rethrow;
   } 
  }
 
